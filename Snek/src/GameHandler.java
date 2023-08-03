@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameHandler {
 	private ArrayList<Entity> Entities;
@@ -14,8 +15,11 @@ public class GameHandler {
 
 	public void init() {
 		//spawn player head
-		Entities.add(new PlayerHead(300, 300, 0, 0, 0, id.PlayerHead, game));
-		game.spawnApple();
+		Entities.add(new PlayerHead(300, 300, 0, 0,-1, id.PlayerHead, game));
+		Arrays.fill(game.bodydir, -1);
+		game.lastbodyidx=0;
+		for(int i = 0; i<game.apples; i++)game.spawnApple();
+		game.amountOfTicks=1+game.speed;
 	}
 
 	public void render(Graphics g) {
@@ -48,29 +52,31 @@ public class GameHandler {
 
 	public void tick() {
 		for(int i = 0; i<Entities.size(); i++) { //updates all movement
-			Entities.get(i).tick();
+			if(Entities.get(i).ID!=id.Apple)Entities.get(i).tick();
 		}
-
+		
+		boolean grace = false;
+		
 		for(int i = 0; i<Entities.size(); i++) { //after movement checks
 			if(Entities.get(i).ID==id.Apple) { //check if apple has been eaten
 				Entities.get(i).tick();
 				if(game.eaten==true) {//adds new player body to end
+					//System.out.println(Entities.get(i).x+" "+Entities.get(i).y+" "+game.headcoord[0]+" "+game.headcoord[1]);
+					game.eaten=false;
 					Entities.add(new PlayerBody(game.tailcoord[0], game.tailcoord[1], 0, 0, id.PlayerBody, game, ++game.lastbodyidx));
 					Entities.remove(i); //removes apple
+					grace=true;
+					game.spawnApple();
 					i--;
 				}
 				//check if head has collided with body
 				//if apple has been eaten this tick then new body spawned potentially on
 				//head is not considered as a collision
-			}else if(Entities.get(i).ID==id.PlayerBody&&game.eaten==false) { 
+			}else if(Entities.get(i).ID==id.PlayerBody&&grace==false) { 
 				if(Entities.get(i).x==game.headcoord[0]&&Entities.get(i).y==game.headcoord[1]) {
 					game.dead();
 				}
 			}
-		}
-		if(game.eaten==true) {
-			game.eaten=false;
-			game.spawnApple();
 		}
 	}
 }

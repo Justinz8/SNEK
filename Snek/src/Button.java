@@ -6,10 +6,10 @@ public class Button extends Entity {
 	
 	public String content;
 	public Color border, inside, hiborder, textcolor, curbordercolor;
-	public int tx, ty, fontsize;
+	public int fontsize;
 	
 	
-	public Button(int x, int y, int vx, int vy, id ID, String content, Color b,Color i,Color hb,Color tc, int tx, int ty, int fz) {
+	public Button(int x, int y, int vx, int vy, id ID, String content, Color b,Color i,Color hb,Color tc, int fz) {
 		super(x, y, vx, vy, ID);
 		this.content=content;
 		border=b;
@@ -17,22 +17,21 @@ public class Button extends Entity {
 		hiborder=hb;
 		textcolor=tc;
 		curbordercolor=b;
-		this.tx=tx+x;
-		this.ty=ty+y;
+
 		fontsize=fz;
 	}
 
 	@Override
 	public void render(Graphics g) {
 		g.setColor(inside);
-		g.fillRect(x, y, velx, vely);
+		//g.fillRect(x, y, velx, vely);
 		g.setColor(curbordercolor);
 		g.drawRect(x, y, velx, vely);
 		g.setColor(curbordercolor);
 		Font bigFont = new Font("Serif", Font.BOLD, fontsize);
 		g.setFont(bigFont);
 		int width = (velx-g.getFontMetrics().stringWidth(content))/2+x;
-		int height = y+g.getFontMetrics().getHeight();
+		int height = y+vely-(vely-g.getFontMetrics().getLeading())/2;
 		g.drawString(content, width, height);
 	}
 	
