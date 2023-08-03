@@ -6,11 +6,12 @@ import java.awt.event.KeyListener;
 
 public class PlayerHead extends Entity{
 	private Game game;
-	private int dir=-1, dir1=-1; //0 = up, 1 = right, 2 = left, 3 = down
+	private int dir, dir1=-1; //0 = up, 1 = right, 2 = left, 3 = down
 
-	public PlayerHead(int x, int y, int vx, int vy, int dir, id ID, Game game) {
+	public PlayerHead(int x, int y, int vx, int vy,int dir, id ID, Game game) {
 		super(x, y, vx, vy, ID);
 		this.game=game;
+		this.dir1=dir;
 	}
 
 	public void render(Graphics g) {
@@ -60,11 +61,14 @@ public class PlayerHead extends Entity{
 		}
 		//if head hits edge then gg
 		if(!Tools.inbounds(100, 550, x, x)||!Tools.inbounds(100, 550, y, y)) {
-			velx=0;
-			vely=0;
-			game.dead();
+			ded();
 		}
-		
+	}
+	
+	public void ded() {
+		velx=0;
+		vely=0;
+		game.dead();
 	}
 
 	@Override

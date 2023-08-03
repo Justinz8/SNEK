@@ -1,5 +1,6 @@
 
 public enum DisplayID {
 	Menu(),
-	Game();
+	Game(),
+	Death();
 }

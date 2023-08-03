@@ -28,6 +28,14 @@ public class Game extends Canvas implements Runnable{
 	private Random rand = new Random();//random object for apple
 	private GameHandler gh;
 	private MenuHandler mh;
+	private DeathScreen ds;
+	public int best[][]=new int[6][4];
+	
+	public double amountOfTicks;
+	
+	public int speed=1;
+	public int apples=1;
+	
 
 	public int bodydir[];//array of directions for each body segment
 	public boolean playing;
@@ -43,6 +51,7 @@ public class Game extends Canvas implements Runnable{
 		Arrays.fill(bodydir, -1);
 		gh = new GameHandler(Entities, this);
 		mh = new MenuHandler(Entities, this);
+		ds = new DeathScreen(Entities, this);
 		//add keylistener so we can input using keyboard
 		//uses KeyInput class for keylistener as it extends KeyAdapter
 		this.addKeyListener(new KeyInput(Entities));
@@ -57,14 +66,13 @@ public class Game extends Canvas implements Runnable{
 
 		//game loop:
 		long lastTime = System.nanoTime();
-		double amountOfTicks = 4; //amount of ticks/s we want
-		double ns = 1000000000 / amountOfTicks;
+		amountOfTicks = 2; //amount of ticks/s we want
 		double delta = 0;
 		long timer = System.currentTimeMillis();
 		int frames = 0;
 		while(running){
 			long now = System.nanoTime();
-			delta += (now - lastTime) / ns; //amount of ticks we suppose to run this loop
+			delta += (now - lastTime) / (1000000000 / amountOfTicks); //amount of ticks we suppose to run this loop
 			lastTime = now;
 			while(delta >= 1){
 				tick();
@@ -95,10 +103,13 @@ public class Game extends Canvas implements Runnable{
 
 	public void tick() {
 		//System.out.println(Entities.size());
+		//System.out.println(amountOfTicks);
 		if(DID==DisplayID.Game) {
 			gh.tick();
 		}else if(DID==DisplayID.Menu) {
 			mh.tick();
+		}else if(DID==DisplayID.Death) {
+			ds.tick();
 		}
 	}
 
@@ -115,6 +126,8 @@ public class Game extends Canvas implements Runnable{
 			gh.render(g);
 		}else if(DID==DisplayID.Menu) {
 			mh.render(g);
+		}else if(DID==DisplayID.Death) {
+			ds.render(g);
 		}
 
 		g.dispose();
@@ -123,18 +136,26 @@ public class Game extends Canvas implements Runnable{
 
 	public void dead() { //clear every object if we ded
 		alive=false;
-		Entities.clear();
+		displayChange(DisplayID.Death);
 	}
 
 	public void spawnApple() {
 		//spawn random apple on grid that is not directly on players head or body
+		
+		//available slots left = total slots-how big the snake is
+		//if not enough slots left for apple then dont spawn apple and reduce apple count by one
+		if(100-(lastbodyidx+1)<apples) {
+			apples--;
+			return;
+		}
+		
 		int x = rand.nextInt(10)*50+100;
 		int y = rand.nextInt(10)*50+100;
 		boolean reroll = false;
 		while(true) {
 			reroll=false;
 			for(Entity i: Entities) {
-				if(x==i.x&&y==i.y&&(i.ID==id.PlayerBody||i.ID==id.PlayerHead)) {
+				if(x==i.x&&y==i.y&&(i.ID==id.PlayerBody||i.ID==id.PlayerHead||i.ID==id.Apple)) {
 					reroll=true;
 				}
 			}
@@ -157,6 +178,9 @@ public class Game extends Canvas implements Runnable{
 			break;
 		case Game:
 			gh.init();
+			break;
+		case Death:
+			ds.init();
 			break;
 		}
 	}
