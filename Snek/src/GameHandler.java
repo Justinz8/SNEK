@@ -28,16 +28,20 @@ public class GameHandler {
 
 		//board
 		g.setColor(Color.black);
-
+		
+		//length counter
 		g.setFont(new Font("Serif", Font.BOLD, 25));
 		g.drawString("Length: "+(game.lastbodyidx+1), 50, 50);
-
+		
+		//start instructions
 		if(game.playing==false) {
 			g.setFont(new Font("Serif", Font.BOLD, 30));
+			//width=x coord needed for message to be in the middle of the screen
 			int width = g.getFontMetrics().stringWidth("Press arrow keys to start!");
 			g.drawString("Press arrow keys to start!", (Tools.width-width)/2, 75);
 		}
 
+		//board
 		for(int curx = 100; curx<=550; curx+=50) {
 			for(int cury = 100; cury<=550; cury+=50) {
 				g.drawRect(curx, cury, 50, 50);

@@ -7,7 +7,8 @@ public class MouseMotionInput extends MouseMotionAdapter {
 	public MouseMotionInput(ArrayList<Entity> Entities) {
 		this.Entities=Entities;
 	}
-	public void mouseMoved(MouseEvent e) {
+	public void mouseMoved(MouseEvent e) {//if mouse moved then go through all entities
+										  //and run their respective actions for mouse moved
 		for(Entity i: Entities) {
 			i.mousemove(e.getX(), e.getY());
 		}

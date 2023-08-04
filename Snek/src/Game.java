@@ -206,7 +206,7 @@ public class Game extends Canvas implements Runnable{
 
 
 	public void spawnApple() {
-		//spawn random apple on grid that is not directly on players head or body
+		//spawn random apple on grid that is not directly on players head or body or other apple
 
 		//available slots left = total slots-how big the snake is
 		//if not enough slots left for apple then dont spawn apple and reduce apple count by one
@@ -218,7 +218,7 @@ public class Game extends Canvas implements Runnable{
 		int x = rand.nextInt(10)*50+100;
 		int y = rand.nextInt(10)*50+100;
 		boolean reroll = false;
-		while(true) {
+		while(true) { //continuosly roll for new coords if apple cant spawn at current coords
 			reroll=false;
 			for(Entity i: Entities) {
 				if(x==i.x&&y==i.y&&(i.ID==id.PlayerBody||i.ID==id.PlayerHead||i.ID==id.Apple)) {
@@ -232,12 +232,13 @@ public class Game extends Canvas implements Runnable{
 				break;
 			}
 		}
-		Entities.add(new Apple(x, y, 0, 0, id.Apple, this));
+		Entities.add(new Apple(x, y, 0, 0, id.Apple, this)); //spawn apple at available coords
 	}
 
 	public void displayChange(DisplayID changeid) {
 		DID=changeid;
 		Entities.clear();
+		//clear entities and switch DisplayID thus switching which handler we are using leading to the new display
 		switch(changeid) {
 		case Menu:
 			mh.init();
@@ -257,7 +258,7 @@ public class Game extends Canvas implements Runnable{
 		}
 	}
 	
-	private void UpdateLocal() throws IOException{
+	private void UpdateLocal() throws IOException{ //update localleaderboard
 		fw = new FileWriter("Leader.txt");
 		for(int i = 0; i<=5; i++) {
 			for(int j = 0; j<=3; j++) {
@@ -269,7 +270,7 @@ public class Game extends Canvas implements Runnable{
 		fw.close();
 	}
 	
-	private void reconstructLeader() throws IOException {
+	private void reconstructLeader() throws IOException {//reset entire leaderboard to 0 with proper format
 		fw = new FileWriter("Leader.txt");
 		for(int i = 0; i<=6; i++) {
 			for(int j = 0; j<=3; j++) {
@@ -284,12 +285,13 @@ public class Game extends Canvas implements Runnable{
 	private void initializeLocalLeader() throws IOException {
 		LocalLeaderText = new File("Leader.txt");
 
-		if(!LocalLeaderText.exists()) {
+		if(!LocalLeaderText.exists()) {//if Leader.txt does not exist create file and construct leaderboard syntax
 			LocalLeaderText.createNewFile();
 			reconstructLeader();
 			return;
 		}
-
+		
+		//otherwise read from the leaderboard and get its written values and copy them to localbest to be displayed in game
 		reader = new FileReader("Leader.txt");
 
 		BufferedReader br = new BufferedReader(reader);

@@ -3,7 +3,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-public class SessionLeaderHandler {
+public class SessionLeaderHandler { //Page handler for session Leaderboard
 	private Game game;
 	private ArrayList<Entity> Entities;
 	
@@ -12,6 +12,7 @@ public class SessionLeaderHandler {
 		this.Entities=Entities;
 	}
 	public void init() {
+		//Menu button
 		Entities.add(new Button(25,25,100,50, id.Button, "Menu", Color.black, Color.white, Color.yellow, Color.black, 15) {
 			public void mousepress(int mouse, int mx, int my) {
 				if(mouse==1&&Tools.inbounds(x, x+velx, mx, mx)&&Tools.inbounds(y, y+vely, my, my)) {
@@ -19,6 +20,7 @@ public class SessionLeaderHandler {
 				}
 			}
 		});
+		//Local Leaderboard button
 		Entities.add(new Button(465,25,200,50, id.Button, "Local Leaderboard", Color.black, Color.white, Color.yellow, Color.black, 15) {
 			public void mousepress(int mouse, int mx, int my) {
 				if(mouse==1&&Tools.inbounds(x, x+velx, mx, mx)&&Tools.inbounds(y, y+vely, my, my)) {
@@ -33,14 +35,13 @@ public class SessionLeaderHandler {
 		}
 	}
 	public void render(Graphics g) {
+		//background
 		g.setColor(Color.white);
 		g.fillRect(0, 0, Tools.width, Tools.height);
 		
 		g.setColor(Color.black);
-		
-		
-		
 		g.setFont(new Font("Serif", Font.BOLD, 23));
+		//width=x coord needed for message to be in the middle of the screen
 		int width = g.getFontMetrics().stringWidth("Session LeaderBoard");
 		g.drawString("Session LeaderBoard", (Tools.width-width)/2, 75);
 		
@@ -49,7 +50,7 @@ public class SessionLeaderHandler {
 		g.drawString("Score", 450, 125);
 		
 		int idx = 0;
-		
+		//print all possible settings
 		for(int i = 1; i<=5; i++) {
 			for(int j = 1; j<=3; j++) {
 				g.drawString("Speed: "+i+" Apple#: "+j, 150, idx*30+155);
@@ -59,6 +60,7 @@ public class SessionLeaderHandler {
 		
 		idx=0;
 		
+		//print all session bests for each respective setting
 		for(int i = 1; i<=5; i++) {
 			for(int j = 1; j<=3; j++) {
 				g.drawString(game.best[i][j]+"", 450, idx*30+155);
