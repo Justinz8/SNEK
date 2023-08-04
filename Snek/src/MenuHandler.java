@@ -21,7 +21,7 @@ public class MenuHandler {
 		
 		game.amountOfTicks=2;
 		
-		Entities.add(new Button(200,400,300,100, id.Button, "play snek", Color.black, Color.white, Color.yellow, Color.black, 50) {
+		Entities.add(new Button(200,275,300,100, id.Button, "play snek", Color.black, Color.white, Color.yellow, Color.black, 50) {
 			public void mousepress(int mouse, int mx, int my) {
 				if(mouse==1&&Tools.inbounds(x, x+velx, mx, mx)&&Tools.inbounds(y, y+vely, my, my)) {
 					game.displayChange(DisplayID.Game);
@@ -29,7 +29,7 @@ public class MenuHandler {
 			}
 		});
 		
-		Entities.add(new Button(200,525,100,100, id.Button, "speed:"+game.speed+"x", Color.black, Color.white, Color.yellow, Color.black, 25) {
+		Entities.add(new Button(200,390,125,100, id.Button, "speed:"+game.speed+"x", Color.black, Color.white, Color.yellow, Color.black, 25) {
 			public void mousepress(int mouse, int mx, int my) {
 				if(mouse==1&&Tools.inbounds(x, x+velx, mx, mx)&&Tools.inbounds(y, y+vely, my, my)) {
 					game.speed=game.speed+1;
@@ -37,8 +37,6 @@ public class MenuHandler {
 				}
 			}
 			public void render(Graphics g) {
-				g.setColor(inside);
-				g.fillRect(x, y, velx, vely);
 				g.setColor(curbordercolor);
 				g.drawRect(x, y, velx, vely);
 				g.setColor(curbordercolor);
@@ -50,7 +48,7 @@ public class MenuHandler {
 			}
 		});
 		
-		Entities.add(new Button(400,525,100,100, id.Button, "#apps:"+game.apples+"x", Color.black, Color.white, Color.yellow, Color.black, 25) {
+		Entities.add(new Button(375,390,125,100, id.Button, "#apps:"+game.apples+"x", Color.black, Color.white, Color.yellow, Color.black, 25) {
 			public void mousepress(int mouse, int mx, int my) {
 				if(mouse==1&&Tools.inbounds(x, x+velx, mx, mx)&&Tools.inbounds(y, y+vely, my, my)) {
 					game.apples=game.apples+1;
@@ -58,8 +56,6 @@ public class MenuHandler {
 				}
 			}
 			public void render(Graphics g) {
-				g.setColor(inside);
-				g.fillRect(x, y, velx, vely);
 				g.setColor(curbordercolor);
 				g.drawRect(x, y, velx, vely);
 				g.setColor(curbordercolor);
@@ -70,6 +66,15 @@ public class MenuHandler {
 				g.drawString("#apps:"+game.apples+"x", width, height);
 			}
 		});
+		
+		Entities.add(new Button(200,505,300,100, id.Button, "Leaderboards", Color.black, Color.white, Color.yellow, Color.black, 25) {
+			public void mousepress(int mouse, int mx, int my) {
+				if(mouse==1&&Tools.inbounds(x, x+velx, mx, mx)&&Tools.inbounds(y, y+vely, my, my)) {
+					game.displayChange(DisplayID.SessionLeader);
+				}
+			}
+		});
+		
 		SpawnMenuSnake();
 
 		initsize=Entities.size();

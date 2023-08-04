@@ -2,5 +2,7 @@
 public enum DisplayID {
 	Menu(),
 	Game(),
-	Death();
+	Death(),
+	SessionLeader(),
+	LocalLeader;
 }

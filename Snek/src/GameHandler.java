@@ -74,7 +74,7 @@ public class GameHandler {
 				//head is not considered as a collision
 			}else if(Entities.get(i).ID==id.PlayerBody&&grace==false) { 
 				if(Entities.get(i).x==game.headcoord[0]&&Entities.get(i).y==game.headcoord[1]) {
-					game.dead();
+					game.displayChange(DisplayID.Death);;
 				}
 			}
 		}

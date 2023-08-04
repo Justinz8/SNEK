@@ -14,7 +14,12 @@ public class DeathScreen {
 	
 	public void init() {
 		game.amountOfTicks=2;
+		
+		//update both leaderboards
 		game.best[game.speed][game.apples]=Math.max(game.best[game.speed][game.apples], game.lastbodyidx+1);
+		game.localbest[game.speed][game.apples] = Math.max(game.localbest[game.speed][game.apples], game.best[game.speed][game.apples]);
+		
+		//retry button
 		Entities.add(new Button(200, 300, 300, 100, id.Button, "Retry?", Color.black, Color.black, Color.yellow, Color.black, 30) {
 			public void mousepress(int mouse, int mx, int my) {
 				if(mouse==1&&Tools.inbounds(x, x+velx, mx, mx)&&Tools.inbounds(y, y+vely, my, my)) {
@@ -22,6 +27,8 @@ public class DeathScreen {
 				}
 			}
 		});
+		
+		//menu button
 		Entities.add(new Button(200, 425, 300, 100, id.Button, "Menu", Color.black, Color.black, Color.yellow, Color.black, 30) {
 			public void mousepress(int mouse, int mx, int my) {
 				if(mouse==1&&Tools.inbounds(x, x+velx, mx, mx)&&Tools.inbounds(y, y+vely, my, my)) {
@@ -37,12 +44,13 @@ public class DeathScreen {
 		}
 	}
 	public void render(Graphics g) {
+		//background
 		g.setColor(Color.white);
 		g.fillRect(0, 0, Tools.width, Tools.height);
 		
 		g.setColor(Color.black);
 		g.setFont(new Font("Serif", Font.BOLD, 30));
-		
+		//width=x coord needed for message to be in the middle of the screen
 		int width = (Tools.width-g.getFontMetrics().stringWidth("Final Length: "+(game.lastbodyidx+1)))/2;
 		g.drawString("Final Length: "+(game.lastbodyidx+1), width, 100);
 		

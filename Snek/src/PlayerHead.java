@@ -68,7 +68,7 @@ public class PlayerHead extends Entity{
 	public void ded() {
 		velx=0;
 		vely=0;
-		game.dead();
+		game.displayChange(DisplayID.Death);;
 	}
 
 	@Override

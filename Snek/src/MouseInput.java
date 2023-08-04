@@ -8,7 +8,8 @@ public class MouseInput extends MouseAdapter{
 		this.Entities=Entities;
 	}
 	
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {//if mouse pressed then go through all entities
+											//and run their respective actions for mouse pressed
 		int mouse = e.getButton();
 		for(int i = 0; i<Entities.size(); i++) {
 			Entities.get(i).mousepress(mouse, e.getX(), e.getY());
